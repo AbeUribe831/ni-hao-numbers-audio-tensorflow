@@ -8,4 +8,4 @@ import sys
 sys.path.append("TensorFlowTTS/")
 
 os.system("pip3 install git+https://github.com/repodiac/german_transliterate.git#egg=german_transliterate")
-os.system("pip3 install h5py==2.10.0")
+os.system("pip3 install h5py==3.1.0")

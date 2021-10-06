@@ -16,14 +16,14 @@ from flask import Response
 from flask_cors import CORS
 from pydub import AudioSegment
 
-tacotron2 = tf.saved_model.load("%s/save_model/tacotron2_model"%os.getcwd())
+tacotron2 = tf.saved_model.load("%s/../save_model/tacotron2_model"%os.getcwd())
 print('------------------------After tacotron2-------------------\n')
-fastspeech2 = tf.saved_model.load("%s/save_model/fastspeech2_model"%os.getcwd())
+fastspeech2 = tf.saved_model.load("%s/../save_model/fastspeech2_model"%os.getcwd())
 
-mb_melgan = tf.saved_model.load("%s/save_model/mb_melgan_model"%os.getcwd())
+mb_melgan = tf.saved_model.load("%s/../save_model/mb_melgan_model"%os.getcwd())
 print('------------------------After mb_melgan-------------------\n')
 # Inference
-processor =  AutoProcessor.from_pretrained("%s/save_model/processor_model"%os.getcwd())
+processor =  AutoProcessor.from_pretrained("%s/../save_model/processor_model"%os.getcwd())
 # ("%s/save_model/processor_model"%os.getcwd())
 print('------------------------After processor-------------------\n')
 
