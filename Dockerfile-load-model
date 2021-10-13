@@ -1,0 +1,35 @@
+FROM tensorflow/tensorflow
+
+RUN apt-get update
+RUN apt-get install -y libsndfile-dev
+RUN apt-get -y install git
+WORKDIR /opt
+RUN rm -rf TensorFlowTTS
+RUN git clone https://github.com/TensorSpeech/TensorFlowTTS.git
+WORKDIR /opt/TensorFlowTTS
+# download all python dependencies
+RUN pip3 install .
+RUN pip3 install pyyaml
+RUN pip3 install jamo
+RUN pip3 install inflect
+RUN pip3 install unidecode
+RUN pip3 install tensorflow_addons
+RUN pip3 install librosa
+RUN pip3 install pypinyin
+RUN pip3 install g2p_en
+RUN pip3 install huggingface_hub
+RUN pip3 install matplotlib
+RUN pip3 install ipython
+WORKDIR /opt
+# make TensorFlowTTS visible to python modules
+RUN export PYTHONPATH="${PYTHONPATH}:/opt/TensorFlowTTS/"
+# get the git repo that will allow me to make data model
+RUN pip3 install git+https://github.com/repodiac/german_transliterate.git#egg=german_transliterate
+RUN pip3 install h5py==3.1.0
+RUN mkdir /opt/ni-hao-numbers-audio-tensorflow
+COPY load_model.py /opt/ni-hao-numbers-audio-tensorflow/load_model.py
+WORKDIR /opt/ni-hao-numbers-audio-tensorflow
+# create the data model
+RUN python3 load_model.py
+WORKDIR /opt
+CMD ["bash"]

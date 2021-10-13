@@ -32,8 +32,8 @@ def create_app():
     return app
 
 app = create_app()
-#cors = CORS(app)
-#app.config['CORS_HEADERS'] = 'Content-Type'
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/fo', methods=['GET'])
 def demo_post_fo():
@@ -89,7 +89,7 @@ def _do_synthesis(input_text, text2mel_model, vocoder_model, text2mel_name, voco
     to_convert = AudioSegment.from_wav(filename)
     to_convert.export(bytes_io_mp3, format('mp3'))
     os.remove(filename)
-    return base64.b64encode(bytes_io_mp3.getvalue())
+    return "".join(map(chr,base64.b64encode(bytes_io_mp3.getvalue())))
 
 
 # create directory for list of audio data encoded in base64

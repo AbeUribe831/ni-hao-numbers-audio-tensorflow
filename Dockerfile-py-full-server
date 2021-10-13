@@ -1,0 +1,37 @@
+FROM tensorflow/tensorflow
+
+RUN apt-get update
+RUN apt-get install -y git
+RUN apt-get install -y libsndfile-dev
+RUN apt install -y ffmpeg
+WORKDIR /opt
+RUN git clone https://github.com/TensorSpeech/TensorFlowTTS.git
+WORKDIR /opt/TensorFlowTTS
+RUN pip3 install .
+RUN pip3 install pyyaml
+RUN pip3 install jamo
+RUN pip3 install inflect
+RUN pip3 install unidecode
+RUN pip3 install tensorflow_addons
+RUN pip3 install librosa
+RUN pip3 install pypinyin
+RUN pip3 install g2p_en
+RUN pip3 install huggingface_hub
+RUN pip3 install matplotlib
+RUN pip3 install ipython
+RUN pip3 install flask
+RUN pip3 install soundfile
+RUN pip3 install Flask-Cors
+RUN pip3 install pydub
+WORKDIR /opt/
+RUN mkdir /opt/ni-hao-numbers-audio-tensorflow
+RUN mkdir /opt/ni-hao-numbers-audio-tensorflow/audio
+COPY synthesis_audio_server.py /opt/ni-hao-numbers-audio-tensorflow/synthesis_audio_server.py
+COPY load_model.py /opt/ni-hao-numbers-audio-tensorflow/load_model.py
+RUN export PYTHONPATH="${PYTHONPATH}:/opt/TensorFlowTTS/"
+RUN pip3 install git+https://github.com/repodiac/german_transliterate.git#egg=german_transliterate
+RUN pip3 install h5py==3.1.0
+WORKDIR /opt/ni-hao-numbers-audio-tensorflow/
+RUN python3 load_model.py
+EXPOSE 3500
+CMD ["python3", "synthesis_audio_server.py"]
